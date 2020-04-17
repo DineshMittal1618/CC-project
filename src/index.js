@@ -31,7 +31,7 @@ app.set('views',viewsPath);
 
 hbs.registerPartials(partialPath);
 
-const port=process.env.PORT || 3000;
+const port=process.env.MON || 3000;
 
 
 app.get('',(req,res)=>{
@@ -164,6 +164,8 @@ app.get('/deleteSelected',(req,res)=>{
     });
 
 })
+
+
 
 app.listen(port,()=>{
     console.log('The server is connected to port '+port);
