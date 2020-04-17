@@ -101,13 +101,28 @@ app.get('/upload',(req,res)=>{
 app.post('/upload',(req,res)=>{
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
+
       var oldpath = files.filetoupload.path;
       var newpath=path.join(__dirname,'../Public/uploads/'+ files.filetoupload.name)
-        fs.rename(oldpath, newpath, function (err) {
+      fs.readFile(oldpath, function (err, data) {
         if (err) throw err;
-        res.redirect("dashboard");
+        console.log('File read!');
+
         
-      })
+        // Write the file
+        fs.writeFile(newpath, data, function (err) {
+            if (err) throw err;
+            res.redirect('/dashboard');
+            res.end();
+            console.log('File written!');
+        });
+
+        // Delete the file
+        fs.unlink(oldpath, function (err) {
+            if (err) throw err;
+            console.log('File deleted!');
+        });
+    });
 })})
 
 
