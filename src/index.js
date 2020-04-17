@@ -31,7 +31,7 @@ app.set('views',viewsPath);
 
 hbs.registerPartials(partialPath);
 
-const port=process.env.MON || 3000;
+const port=process.env.PORT;
 
 
 app.get('',(req,res)=>{
