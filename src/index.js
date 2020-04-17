@@ -5,19 +5,15 @@ const fs=require('fs');
 const session=require('express-session');
 var bodyParser = require('body-parser');
 const user=require('../src/models/user.js');
-var multer = require('multer');
 const formidable=require('formidable');
 require('./db/mongoose.js');
 
 const app=express();
-var upload = multer();
-const pathName=path.join(__dirname,'../public');
+const pathName=path.join(__dirname,'../Public');
 const viewsPath=path.join(__dirname,"../templates/views");
-const partialPath=path.join(__dirname,'../templates/partials')
 
 
 app.use(express.json());
-
 app.use(express.static(pathName));
 app.use(session({secret:"dineshmittal",resave:false,saveUninitialized:true}));
 app.use(bodyParser.json()); 
@@ -28,8 +24,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine','ejs');
 app.set('views',viewsPath);
 
-
-hbs.registerPartials(partialPath);
 
 const port=process.env.PORT;
 
@@ -59,7 +53,7 @@ app.post('/login',(req,res)=>{
             return res.status(400).send("my love");
         }
         req.session.user=user;
-        res.render('dashboard',{Title:'Dashboard',name:'Dinesh Mittal'});
+        res.redirect('dashboard');
     })
 })
 
@@ -79,7 +73,7 @@ app.get('/signup',(req,res)=>{
         {
             return res.status(404).send()
         }
-        res.render('login',{Title:'Dashboard',name:'Dinesh Mittal'});
+        res.redirect('login');
     }).catch((err)=>
     {
         res.status(400).send(err);        
@@ -89,7 +83,7 @@ app.get('/signup',(req,res)=>{
 
 app.get('/dashboard',(req,res)=>{
     if(!req.session.user){
-        return res.render('login')   
+        return res.redirect('login') 
     }
     res.render('dashboard',{Title:'Dashboard',name:'Dinesh Mittal'})
     
@@ -98,7 +92,7 @@ app.get('/dashboard',(req,res)=>{
 
 app.get('/upload',(req,res)=>{
     if(!req.session.user){
-        return res.render('login') 
+        return res.redirect('login') 
       }
     res.render('upload',{Title:'Upload',name:'Dinesh Mittal'})
 })
@@ -112,7 +106,7 @@ app.post('/upload',(req,res)=>{
       var newpath = 'C:/Users/Lenovo/Desktop/Learn Node/File Manager/Public/uploads/'+ files.filetoupload.name;
       fs.rename(oldpath, newpath, function (err) {
         if (err) throw err;
-        res.render("dashboard",{Title:'dashboard',name:'Dinesh Mittal',success:'true'});
+        res.redirect("dashboard");
         
       })
 })})
@@ -120,7 +114,7 @@ app.post('/upload',(req,res)=>{
 
 app.get('/view',(req,res)=>{
     if(!req.session.user){
-        return res.render('login',{Title:'Dashboard',name:'Dinesh Mittal'})
+        return res.redirect('login')
      }
     console.log(req.session.user);
     const dirPath=path.join(__dirname,'../public/uploads');
@@ -135,13 +129,12 @@ app.get('/display',(req,res)=>{
     const data=req.query.data;
     const filepath=path.join(__dirname,"../public/uploads/"+data);
     console.log(filepath);
-    var dataToBeSend =fs.readFileSync(filepath);
     res.download(filepath);
 })
 
 app.get('/delete',(req,res)=>{
     if(!req.session.user){
-        return res.render('login',{Title:'Dashboard',name:'Dinesh Mittal'})
+        return res.redirect('login')
      }
     console.log(req.session.user);
     const dirPath=path.join(__dirname,'../public/uploads');
