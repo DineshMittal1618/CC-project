@@ -108,7 +108,7 @@ app.post('/upload',(req,res)=>{
         if (err) throw err;
         console.log('File read!');
 
-        
+
         // Write the file
         fs.writeFile(newpath, data, function (err) {
             if (err) throw err;
@@ -130,8 +130,9 @@ app.get('/view',(req,res)=>{
     if(!req.session.user){
         return res.redirect('login')
      }
-    console.log(req.session.user);
-    const dirPath=path.join(__dirname,'../public/uploads');
+    const dirPath=path.join(__dirname,'../Public/uploads');
+    console.log(dirPath);
+    
     fs.readdir(dirPath,(err,ls)=>{
         console.log(ls);
         
@@ -141,7 +142,7 @@ app.get('/view',(req,res)=>{
 
 app.get('/display',(req,res)=>{
     const data=req.query.data;
-    const filepath=path.join(__dirname,"../public/uploads/"+data);
+    const filepath=path.join(__dirname,"../Public/uploads/"+data);
     console.log(filepath);
     res.download(filepath);
 })
@@ -151,7 +152,7 @@ app.get('/delete',(req,res)=>{
         return res.redirect('login')
      }
     console.log(req.session.user);
-    const dirPath=path.join(__dirname,'../public/uploads');
+    const dirPath=path.join(__dirname,'../Public/uploads');
     fs.readdir(dirPath,(err,ls)=>{
         res.render('delete',{Title:'Delete',name:'Dinesh Mittal',data:ls})    
     })
@@ -159,7 +160,7 @@ app.get('/delete',(req,res)=>{
 
 app.get('/deleteSelected',(req,res)=>{
     const data=req.query.data;
-    const filepath=path.join(__dirname,"../public/uploads/"+data);
+    const filepath=path.join(__dirname,"../Public/uploads/"+data);
     console.log('hi');
 
     fs.unlink(filepath,(err)=>{
