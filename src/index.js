@@ -102,9 +102,8 @@ app.post('/upload',(req,res)=>{
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
       var oldpath = files.filetoupload.path;
-      console.log(files.filetoupload.name);
-      var newpath = 'C:/Users/Lenovo/Desktop/Learn Node/File Manager/Public/uploads/'+ files.filetoupload.name;
-      fs.rename(oldpath, newpath, function (err) {
+      var newpath=path.join(__dirname,'../Public/uploads/'+ files.filetoupload.name)
+        fs.rename(oldpath, newpath, function (err) {
         if (err) throw err;
         res.redirect("dashboard");
         
