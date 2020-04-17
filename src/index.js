@@ -11,13 +11,13 @@ require('./db/mongoose.js');
 
 const app=express();
 var upload = multer();
-
 const pathName=path.join(__dirname,'../public');
 const viewsPath=path.join(__dirname,"../templates/views");
 const partialPath=path.join(__dirname,'../templates/partials')
 
 
 app.use(express.json());
+
 app.use(express.static(pathName));
 app.use(session({secret:"dineshmittal",resave:false,saveUninitialized:true}));
 app.use(bodyParser.json()); 
