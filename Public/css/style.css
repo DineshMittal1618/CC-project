@@ -39,7 +39,7 @@ form{
     }
     
     header a{
-        color: #888888;
+        color: #333333;
         margin-right: 16px;
         text-decoration: none;
     }
@@ -61,3 +61,16 @@ form{
         color: white;
         padding: 8px;
     }
+
+    img{
+        width:200px;
+    }
+
+    
+
+    a:hover
+  {
+    color:#888888;
+    text-decoration:none;
+    cursor:pointer;
+   }

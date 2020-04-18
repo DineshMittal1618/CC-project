@@ -8,9 +8,11 @@
         <div class='main-content'>
         <%- include ("../partials/header") %>     
             <form action="/upload" method="post" enctype="multipart/form-data">
+                <div>
             <input type="file" name="filetoupload">
             <input type="submit">
-            </form>
+        </div>
+        </form>
         </div>
         <%- include ("../partials/footer") %>
     </body>

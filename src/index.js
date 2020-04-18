@@ -29,12 +29,12 @@ const port=process.env.PORT;
 
 
 app.get('',(req,res)=>{
-    res.render('index',{Title:'Login',name:'Dinesh Mittal'});
+    res.render('index',{Title:'Login',name:'CC-Group12'});
 })
 
 
 app.get('/login',(req,res)=>{
-    res.render('login',{Title:'Login',name:'Dinesh Mittal'});
+    res.render('login',{Title:'Login',name:'CC-Group12'});
 })
 
 app.post('/login',(req,res)=>{
@@ -59,7 +59,7 @@ app.post('/login',(req,res)=>{
 
 
 app.get('/signup',(req,res)=>{
-    res.render('signup',{Title:'Signup',name:'Dinesh Mittal'});
+    res.render('signup',{Title:'Signup',name:'CC-Group12'});
 })
 
 
@@ -85,7 +85,7 @@ app.get('/dashboard',(req,res)=>{
     if(!req.session.user){
         return res.redirect('login') 
     }
-    res.render('dashboard',{Title:'Dashboard',name:'Dinesh Mittal'})
+    res.render('dashboard',{Title:'Dashboard',name:'CC-Group12'})
     
     })
 
@@ -94,7 +94,7 @@ app.get('/upload',(req,res)=>{
     if(!req.session.user){
         return res.redirect('login') 
       }
-    res.render('upload',{Title:'Upload',name:'Dinesh Mittal'})
+    res.render('upload',{Title:'Upload',name:'CC-Group12'})
 })
 
 
@@ -103,12 +103,18 @@ app.post('/upload',(req,res)=>{
     form.parse(req, function (err, fields, files) {
 
       var oldpath = files.filetoupload.path;
-      var newpath=path.join(__dirname,'../Public/uploads/'+ files.filetoupload.name)
+      newdirpath=path.join(__dirname,'../Public/uploads/'+req.session.user.username);
+      if(!fs.existsSync(newdirpath))
+      {
+          fs.mkdirSync(newdirpath);
+      }
+      var newpath=path.join(__dirname,'../Public/uploads/'+req.session.user.username+'/'+ files.filetoupload.name)
       fs.readFile(oldpath, function (err, data) {
         if (err) throw err;
         console.log('File read!');
 
-
+        console.log(req.session.user._id);
+        
         // Write the file
         fs.writeFile(newpath, data, function (err) {
             if (err) throw err;
@@ -130,19 +136,19 @@ app.get('/view',(req,res)=>{
     if(!req.session.user){
         return res.redirect('login')
      }
-    const dirPath=path.join(__dirname,'../Public/uploads');
+    const dirPath=path.join(__dirname,'../Public/uploads/'+req.session.user.username);
     console.log(dirPath);
     
     fs.readdir(dirPath,(err,ls)=>{
         console.log(ls);
         
-        res.render('view',{Title:'View',name:'Dinesh Mittal',data:ls})    
+        res.render('view',{Title:'View',name:'CC-Group12',data:ls})    
     })
 })
 
 app.get('/display',(req,res)=>{
     const data=req.query.data;
-    const filepath=path.join(__dirname,"../Public/uploads/"+data);
+    const filepath=path.join(__dirname,"../Public/uploads/"+req.session.user.username+'/'+data);
     console.log(filepath);
     res.download(filepath);
 })
@@ -152,15 +158,15 @@ app.get('/delete',(req,res)=>{
         return res.redirect('login')
      }
     console.log(req.session.user);
-    const dirPath=path.join(__dirname,'../Public/uploads');
+    const dirPath=path.join(__dirname,'../Public/uploads/'+req.session.user.username);
     fs.readdir(dirPath,(err,ls)=>{
-        res.render('delete',{Title:'Delete',name:'Dinesh Mittal',data:ls})    
+        res.render('delete',{Title:'Delete',name:'CC-Group12',data:ls})    
     })
 })
 
 app.get('/deleteSelected',(req,res)=>{
     const data=req.query.data;
-    const filepath=path.join(__dirname,"../Public/uploads/"+data);
+    const filepath=path.join(__dirname,"../Public/uploads/"+req.session.user.username+'/'+data);
     console.log('hi');
 
     fs.unlink(filepath,(err)=>{
