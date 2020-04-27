@@ -150,7 +150,7 @@ app.get('/display',(req,res)=>{
     const data=req.query.data;
     const filepath=path.join(__dirname,"../Public/uploads/"+req.session.user.username+'/'+data);
     console.log(filepath);
-    res.download(filepath);
+    res.sendFile(filepath);
 })
 
 app.get('/delete',(req,res)=>{
